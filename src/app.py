@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from db import Database
 
 def create_app():
@@ -7,7 +7,7 @@ def create_app():
 
     @app.route('/')
     def hello():
-        return 'Hello, World!'
+        return render_template('home.html', name="Pedro")
 
     @app.route('/dbtest')
     def db_test():
@@ -19,7 +19,7 @@ def create_app():
 
         db.execute_query("INSERT INTO test (num, data) VALUES (1, 'Data 1'), (2, 'Data 2'), (3, 'Data 3')")
 
-        result = db.execute_fetchone_query("SELECT * FROM test")
+        result = db.execute_fetchall_query("SELECT * FROM test")
 
         # Return the fetched data as a response
         return str(result)
