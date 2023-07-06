@@ -1,4 +1,5 @@
 import psycopg
+from datetime import datetime
 
 class Database():
     def __init__(self) -> None:
@@ -11,9 +12,12 @@ class Database():
                 password='postgres'
             )
 
+        print('Conexão iniciada! ', self.__current_time_formated())
+
     def __del__(self) -> None:
-        "Encerra conexão quando a variável sair do escopo"
+        "Encerra conexão quando a classe sair do escopo"
         self.db.close()
+        print('Conexão encerrada! ', self.__current_time_formated())
 
     def execute_query(self, query: str):
         "Executa query que não retorna um registro"
@@ -21,7 +25,7 @@ class Database():
         self.db.commit()
 
     def execute_multiple_queries(self, queries: list[str]):
-        "Executa múltiplas queries"
+        "Executa múltiplas queries que não retornam registros"
         for query in queries:
             self.db.execute(query)
         self.db.commit()
@@ -38,3 +42,5 @@ class Database():
         self.db.commit()
         return result
 
+    def __current_time_formated(self):
+        return datetime.now().strftime("%H:%M:%S.%f")
