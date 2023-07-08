@@ -1,7 +1,7 @@
 import psycopg
 from datetime import datetime
 
-class Database():
+class Database:
     def __init__(self) -> None:
         "Inicializa conexão com o banco"
         self.db = psycopg.connect(
@@ -19,9 +19,9 @@ class Database():
         self.db.close()
         print('Conexão encerrada! ', self.__current_time_formated())
 
-    def execute_query(self, query: str):
+    def execute_query(self, query: str, params=None):
         "Executa query que não retorna um registro"
-        self.db.execute(query)
+        self.db.execute(query, params)
         self.db.commit()
 
     def execute_multiple_queries(self, queries: list[str]):
@@ -30,15 +30,15 @@ class Database():
             self.db.execute(query)
         self.db.commit()
 
-    def execute_fetchone_query(self, query: str):
+    def execute_fetchone_query(self, query: str, params=None):
         "Executa query que retorna apenas um registro"
-        result = self.db.execute(query).fetchone()
+        result = self.db.execute(query, params).fetchone()
         self.db.commit()
         return result
 
-    def execute_fetchall_query(self, query: str):
+    def execute_fetchall_query(self, query: str, params=None):
         "Executa query que retorna múltiplos registros"
-        result = self.db.execute(query).fetchall()
+        result = self.db.execute(query, params).fetchall()
         self.db.commit()
         return result
 

@@ -3,8 +3,8 @@
 # Como rodar o projeto
 
 Instalação de dependências:
-- Instalar docker
-- Instalar python 3.11.4
+- Instalar [docker](https://docs.docker.com/get-docker/)
+- Instalar [python](https://www.python.org/downloads/)
 
 Instanciar banco de dados:
 - Usando o comando do docker compose: `docker compose up`

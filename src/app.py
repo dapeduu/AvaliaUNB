@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from db import Database
+from database.db import Database
 
 def create_app():
     # create and configure the app
@@ -12,17 +12,20 @@ def create_app():
     @app.route('/dbtest')
     def db_test():
         db = Database()
-        db.execute_query("""CREATE TABLE IF NOT EXISTS test (
-                id serial PRIMARY KEY,
-                num integer,
-                data text)""")
 
-        db.execute_query("INSERT INTO test (num, data) VALUES (1, 'Data 1'), (2, 'Data 2'), (3, 'Data 3')")
+        db.execute_query("""
+            INSERT INTO estudante (email, matricula, senha, admin)
+            VALUES (%s, %s, %s, %s)
+        """, ('teste@teste.com', '2000', '1234', False))
 
-        result = db.execute_fetchall_query("SELECT * FROM test")
+        result = db.execute_fetchall_query("SELECT * FROM estudante")
 
         # Return the fetched data as a response
         return str(result)
+
+    @app.route('/login')
+    def login():
+        return render_template('login.html')
 
     return app
 
