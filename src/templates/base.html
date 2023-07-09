@@ -8,6 +8,14 @@
     <script src="{{ url_for('static', filename='bootstrap-5.3.0-dist/js/bootstrap.bundle.min.js') }}"></script>
 </head>
 <body>
+
+{% if message %}
+<div class="alert alert-danger" role="alert">
+    {{message}}
+</div>
+{% endif %}
+
+
 {% block main %}
 {% endblock %}
 </body>

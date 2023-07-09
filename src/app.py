@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from database.db import Database
 
 def create_app():
@@ -6,7 +6,7 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
 
     @app.route('/')
-    def hello():
+    def home():
         return render_template('home.html', name="Pedro")
 
     @app.route('/dbtest')
@@ -23,8 +23,23 @@ def create_app():
         # Return the fetched data as a response
         return str(result)
 
-    @app.route('/login')
+    @app.route('/login', methods=['GET', 'POST'])
     def login():
+        if request.method == 'POST':
+            matricula = request.form['matricula']
+            senha = request.form['senha']
+
+            db = Database()
+            user = db.execute_fetchone_query("""
+                SELECT matricula, senha FROM estudante
+                WHERE matricula = %s AND senha = %s
+            """, (matricula, senha))
+
+            if user:
+                return redirect(url_for('home'))
+            else:
+                return render_template('login.html', message="Usuário não encontrado!")
+
         return render_template('login.html')
 
     return app

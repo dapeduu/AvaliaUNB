@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container-md">
+
+
+    <form method="post" action="{{url_for('login')}}">
+        <div class="col mb-3">
+      <label for="matricula" class="col-sm-2 col-form-label">Matrícula</label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" name="matricula" id="matricula">
+    </div>
+    </div>
+
+    <div class="col mb-3">
+        <label for="senha" class="col-sm-2 col-form-label">Senha</label>
+      <div class="col-sm-10">
+          <input type="password" class="form-control" name="senha" id="senha">
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Fazer login</button>
+</form>
+</div>
+
+{% endblock %}
