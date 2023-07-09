@@ -1,4 +1,5 @@
 import psycopg
+from psycopg.rows import dict_row
 from datetime import datetime
 
 class Database:
@@ -9,7 +10,8 @@ class Database:
                 port='5432',
                 dbname='avalia_unb',
                 user='postgres',
-                password='postgres'
+                password='postgres',
+                row_factory=dict_row
             )
 
         print('Conexão iniciada! ', self.__current_time_formated())
