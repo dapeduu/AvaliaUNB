@@ -3,4 +3,49 @@
 
 <h1>Fazer Avaliação</h1>
 
+<form method="post" action="{{url_for('auth.login')}}">
+  <div class="col mb-3">
+    <label for="disciplina" class="col-sm-2 col-form-label">Disciplina</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="professor" id="professor" readonly
+        value="{{turma['disciplina_nome']}}">
+    </div>
+  </div>
+
+  <div class="col mb-3">
+    <label for="professor" class="col-sm-2 col-form-label">Professor</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="professor" id="professor" readonly
+        value="{{turma['professor_nome']}}">
+    </div>
+  </div>
+
+  <div class="col mb-3">
+    <label for="periodo" class="col-sm-2 col-form-label">Período</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="periodo" id="periodo" readonly value="{{turma['periodo']}}">
+    </div>
+  </div>
+
+  <div class="col mb-3">
+    <label for="estrelas" class="col-sm-2 col-form-label">Estrelas</label>
+    <div class="col-sm-10">
+      <input type="number" class="form-control" name="estrelas" id="estrelas" max="5">
+    </div>
+  </div>
+
+  <div class="col mb-3">
+    <label for="comentario" class="col-sm-2 col-form-label">Comentário</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="comentario" id="comentario">
+    </div>
+  </div>
+
+
+
+  <button type="submit" class="btn btn-primary">
+    Fazer avaliação
+  </button>
+</form>
+
 {% endblock %}
