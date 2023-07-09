@@ -9,11 +9,20 @@
 </head>
 <body>
 
-{% if message %}
-<div class="alert alert-danger" role="alert">
-    {{message}}
-</div>
-{% endif %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class=flashes>
+            {% for category, message in messages %}
+              <div class="alert alert-{{category}} d-flex align-items-center max-width-sm" role="alert">
+                <div>
+                  {{message}}
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
 
 
 {% block main %}
