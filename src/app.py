@@ -1,12 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from database.db import Database
 import base64
+from werkzeug.utils import secure_filename
+
 
 def create_app():
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config['UPLOAD_FOLDER'] = '/uploads'
-    app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+    app.secret_key = b'_5#y2L"F4Q8z\n\xec]/' # Precisa dessa chave pra mostrar flash messages
 
     @app.route('/')
     def home():
@@ -39,36 +43,37 @@ def create_app():
             """, (matricula, senha))
 
             if user:
+                flash('Login realizado com sucesso!', 'success')
                 return redirect(url_for('home'))
             else:
-                return render_template('login.html', message="Usuário não encontrado!")
+                flash('Usuário ou senha incorretos!', 'warning')
 
         return render_template('login.html')
 
     @app.route('/register', methods=['GET', 'POST'])
     def register():
         if request.method == 'POST':
-
             student = dict(request.form)
+
             student['email'] = f'{student["matricula"]}@aluno.unb.br'
 
-            avatar = request.form['avatar']
-            avatar_file = request.files.get(avatar)
+            avatar = request.files.get('avatar', False)
 
-            if avatar_file:
-                encoded_image = base64.b64encode(avatar_file)
+            if avatar:
+                encoded_image = base64.b64encode(avatar.read())
                 student['avatar'] = encoded_image
+            else:
+                flash('Não foi possível carregar sua foto de perfil.', 'info')
 
             # Stores on database
-
-            breakpoint()
 
             db = Database()
             db.execute_query("""
                 INSERT INTO estudante (matricula, avatar, senha, email)
                 VALUES (%s, %s, %s, %s)
-            """, tuple(student.values()))
+            """, (student.get('matricula'), student.get('avatar'), student.get('senha'), student.get('email')))
 
+            flash('Cadastro realizado com sucesso!', 'success')
             return redirect(url_for('home'))
 
         return render_template('register.html')
