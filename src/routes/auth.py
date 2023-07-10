@@ -40,6 +40,13 @@ def login():
     return render_template("login.html")
 
 
+@blueprint.route("/logout", methods=["GET"])
+def logout():
+    response = make_response(redirect(url_for("auth.login")))
+    response.delete_cookie("userID")
+    return response
+
+
 @blueprint.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":

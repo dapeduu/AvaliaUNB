@@ -37,6 +37,16 @@
         <div class="navbar-nav">
           <a class="nav-link" href="{{url_for('avaliacao.index')}}">Avaliacoes</a>
         </div>
+        <div class="navbar-nav">
+          {% with current_user = request.cookies.get("userID")%}
+          {% if current_user %}
+          <a class="nav-link" href="{{url_for('auth.logout')}}">Logout</a>
+          {% else %}
+          <a class="nav-link" href="{{url_for('auth.login')}}">Login</a>
+          {% endif %}
+
+          {%endwith%}
+        </div>
       </div>
     </div>
   </nav>

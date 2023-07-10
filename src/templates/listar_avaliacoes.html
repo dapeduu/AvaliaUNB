@@ -2,15 +2,17 @@
 
 {% block main %}
 
-<h1>Avaliações</h1>
+<h1>Visão Geral</h1>
 {% for avaliacao in avaliacoes %}
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">{{avaliacao['professor_nome']}}</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">{{avaliacao['turma_periodo']}}</h6>
-            <p class="card-text">Avaliação média: {{avaliacao['avaliacao_media']|int}}</p>
-        </div>
-    </div>
+<div class="card m-4" style="max-width: 18rem">
+  <div class="card-body">
+    <h5 class="card-title">{{avaliacao['professor_nome']}}</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">{{avaliacao['turma_periodo']}}</h6>
+    <p class="card-text">Avaliação média: {{avaliacao['avaliacao_media']|int}}</p>
+    <a class="btn btn-primary" href="{{avaliacao['avaliar_url']}}">Avaliar</a>
+    <a class="btn btn-primary" href="{{avaliacao['comentarios_url']}}">Comentários</a>
+  </div>
+</div>
 {% endfor %}
 
 {% endblock %}

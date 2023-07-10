@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+
+<h1>Comentários</h1>
+<h2>Professor: {{turma['nome_professor']}}</h2>
+<h3>Período: {{turma['periodo']}} </h3>
+
+{% for comentario in comentarios %}
+<div class="card m-4" style="max-width: 18rem">
+    <div class="card-body">
+        <h5 class="card-title">Avaliação: {{comentario['estrelas']}}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">{{comentario['comentario'] if comentario['comentario'] else
+            'Sem comentário'}}</h6>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

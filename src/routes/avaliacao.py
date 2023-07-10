@@ -1,4 +1,13 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    make_response,
+    flash,
+    redirect,
+    url_for,
+    jsonify,
+)
 from db import Database
 from psycopg import errors
 import base64
@@ -8,6 +17,25 @@ blueprint = Blueprint("avaliacao", __name__)
 
 @blueprint.route("/")
 def index():
+    make_avaliar_url = lambda x: {
+        **x,
+        "avaliar_url": url_for(
+            "avaliacao.create",
+            disciplina_codigo=x["codigo_disciplina"],
+            professor_matricula=x["matricula_professor"],
+            periodo=x["turma_periodo"],
+        ),
+    }
+    make_comentarios_url = lambda x: {
+        **x,
+        "comentarios_url": url_for(
+            "avaliacao.list_comentarios",
+            turma_codigo_disciplina=x["codigo_disciplina"],
+            turma_matricula_professor=x["matricula_professor"],
+            turma_periodo=x["turma_periodo"],
+        ),
+    }
+
     db = Database()
 
     avaliacoes = db.execute_fetchall_query(
@@ -15,8 +43,50 @@ def index():
         SELECT * FROM turma_avaliacoes_view
     """
     )
+    avaliacoes = map(make_avaliar_url, avaliacoes)
+    avaliacoes = map(make_comentarios_url, avaliacoes)
 
-    return render_template("listar_avaliacoes.html", avaliacoes=avaliacoes)
+    return render_template(
+        "listar_avaliacoes.html",
+        avaliacoes=avaliacoes,
+        current_user=request.cookies.get("userID"),
+    )
+
+
+@blueprint.route(
+    "/listar_comentarios/turma/<turma_periodo>/<turma_matricula_professor>/<turma_codigo_disciplina>"
+)
+def list_comentarios(
+    turma_periodo: str, turma_matricula_professor: int, turma_codigo_disciplina: str
+):
+    db = Database()
+
+    turma = db.execute_fetchone_query(
+        """
+        SELECT p.nome AS nome_professor, t.periodo FROM turma t
+        LEFT JOIN professor p ON p.matricula = t.matricula_professor
+        WHERE t.periodo = %s AND t.matricula_professor = %s AND t.codigo_disciplina = %s
+    """,
+        (turma_periodo, turma_matricula_professor, turma_codigo_disciplina),
+    )
+
+    comentarios = db.execute_fetchall_query(
+        """
+            SELECT estudante_matricula, comentario, estrelas FROM avaliacao
+            WHERE avaliacao.turma_matricula_professor = %s
+                  AND avaliacao.turma_periodo = %s
+                  AND turma_codigo_disciplina = %s
+        """,
+        (
+            turma_matricula_professor,
+            turma_periodo,
+            turma_codigo_disciplina,
+        ),
+    )
+
+    return render_template(
+        "listar_comentarios.html", comentarios=comentarios, turma=turma
+    )
 
 
 @blueprint.route(
