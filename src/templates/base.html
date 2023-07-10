@@ -10,49 +10,48 @@
 </head>
 
 <body>
+  <div class="container-sm center">
 
-  {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-  <ul class=flashes>
-    {% for category, message in messages %}
-    <div class="alert alert-{{category}} d-flex align-items-center max-width-sm" role="alert">
-      <div>
-        {{message}}
-      </div>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-  </ul>
-  {% endif %}
-  {% endwith %}
-
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">AvaliaUNB</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link" href="{{url_for('avaliacao.index')}}">Avaliacoes</a>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class=flashes>
+      {% for category, message in messages %}
+      <div class="alert alert-{{category}} d-flex align-items-center max-width-sm" role="alert">
+        <div>
+          {{message}}
         </div>
-        <div class="navbar-nav">
-          {% with current_user = request.cookies.get("userID")%}
-          {% if current_user %}
-          <a class="nav-link" href="{{url_for('auth.logout')}}">Logout</a>
-          {% else %}
-          <a class="nav-link" href="{{url_for('auth.login')}}">Login</a>
-          {% endif %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 
-          {%endwith%}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">AvaliaUNB</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link" href="{{url_for('avaliacao.index')}}">Avaliacoes</a>
+            {% with current_user = request.cookies.get("userID")%}
+            {% if current_user %}
+            <a class="nav-link" href="{{url_for('auth.logout')}}">Logout</a>
+            {% else %}
+            <a class="nav-link" href="{{url_for('auth.login')}}">Login</a>
+            {% endif %}
+            {%endwith%}
+          </div>
         </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  {% block main %}
-  {% endblock %}
+    {% block main %}
+    {% endblock %}
+  </div>
 </body>
 
 </html>
