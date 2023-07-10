@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from db import Database
+from psycopg import errors
 import base64
 
 blueprint = Blueprint("avaliacao", __name__)
@@ -23,20 +24,46 @@ def index():
     methods=["GET", "POST"],
 )
 def create(disciplina_codigo: str, professor_matricula: str, periodo: str):
-    if request.method == "POST":
-        pass
-
-    current_matricula = request.cookies.get("user")
-
+    current_matricula = request.cookies.get("userID")
     default_information = {
         "disciplina_codigo": disciplina_codigo,
         "professor_matricula": professor_matricula,
         "periodo": periodo,
         "estudante_matricula": current_matricula,
     }
+    form_url = url_for(
+        "avaliacao.create",
+        disciplina_codigo=disciplina_codigo,
+        professor_matricula=professor_matricula,
+        periodo=periodo,
+    )
+
+    if request.method == "POST":
+        db = Database()
+        try:
+            db.execute_query(
+                """
+                INSERT INTO avaliacao (estrelas, comentario, turma_periodo, turma_matricula_professor, turma_codigo_disciplina, estudante_matricula)
+                VALUES(%s, %s, %s, %s, %s, %s);
+            """,
+                (
+                    request.form.get("estrelas"),
+                    request.form.get("comentario"),
+                    periodo,
+                    professor_matricula,
+                    disciplina_codigo,
+                    current_matricula,
+                ),
+            )
+        except errors.UniqueViolation:
+            flash("Você já avaliou essa turma.", "warning")
+            return redirect(form_url)
+
+        flash("Avaliação criada com sucesso!", "success")
+
+        return redirect(url_for("avaliacao.index"))
 
     db = Database()
-
     turma = db.execute_fetchone_query(
         """
         select p.nome as professor_nome, d.nome as disciplina_nome, t.periodo from turma t
@@ -46,6 +73,12 @@ def create(disciplina_codigo: str, professor_matricula: str, periodo: str):
     """,
         (periodo, professor_matricula, disciplina_codigo),
     )
-    turma = {**dict(turma), **default_information}
+    turma = {**dict(turma or {}), **default_information}
+    form_url = url_for(
+        "avaliacao.create",
+        disciplina_codigo=disciplina_codigo,
+        professor_matricula=professor_matricula,
+        periodo=periodo,
+    )
 
-    return render_template("criar_avaliacao.html", turma=turma)
+    return render_template("criar_avaliacao.html", turma=turma, form_url=form_url)

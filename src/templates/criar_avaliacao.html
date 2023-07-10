@@ -3,7 +3,7 @@
 
 <h1>Fazer Avaliação</h1>
 
-<form method="post" action="{{url_for('auth.login')}}">
+<form method="post" action="{{form_url}}">
   <div class="col mb-3">
     <label for="disciplina" class="col-sm-2 col-form-label">Disciplina</label>
     <div class="col-sm-10">
@@ -30,18 +30,16 @@
   <div class="col mb-3">
     <label for="estrelas" class="col-sm-2 col-form-label">Estrelas</label>
     <div class="col-sm-10">
-      <input type="number" class="form-control" name="estrelas" id="estrelas" max="5">
+      <input type="number" class="form-control" name="estrelas" id="estrelas" min="1" max="5" required>
     </div>
   </div>
 
   <div class="col mb-3">
     <label for="comentario" class="col-sm-2 col-form-label">Comentário</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="comentario" id="comentario">
+      <textarea type="" class="form-control" name="comentario" id="comentario" rows="3" maxlength="255"></textarea>
     </div>
   </div>
-
-
 
   <button type="submit" class="btn btn-primary">
     Fazer avaliação

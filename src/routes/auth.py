@@ -31,8 +31,9 @@ def login():
         if user:
             flash("Login realizado com sucesso!", "success")
             response = make_response(redirect(url_for("avaliacao.index")))
-            response.set_cookie("user", matricula, samesite="Lax")
-            return redirect(url_for("avaliacao.index"))
+            response.set_cookie("userID", matricula)
+
+            return response
         else:
             flash("Usuário ou senha incorretos!", "warning")
 
