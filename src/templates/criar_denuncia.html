@@ -2,6 +2,8 @@
 
 {% block main %}
 
+<h1>Denunciar avaliação:</h1>
+
 <div class="card m-4" style="max-width: 18rem">
   <div class="card-body">
     <h5 class="card-title">Avaliação: {{avaliacao['estrelas']}}</h5>
@@ -9,5 +11,20 @@
       'Sem comentário'}}</h6>
   </div>
 </div>
+
+<h2>Informações: </h2>
+
+<form action="{{form_url}}" method="post" class="m-4">
+  <div class="col mb-3">
+    <label for="comentario" class="col-sm-2 col-form-label">O que há de errado com a avaliação?</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="comentario" id="comentario" required>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-danger">
+    Fazer denuncia
+  </button>
+</form>
 
 {% endblock %}

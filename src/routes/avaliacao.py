@@ -12,6 +12,8 @@ from db import Database
 from psycopg import errors
 import base64
 
+from urls import generate_denuncia_url
+
 blueprint = Blueprint("avaliacao", __name__)
 
 
@@ -168,18 +170,3 @@ def generate_avaliacoes_with_denuncia(avaliacoes: list):
         avaliacao["denuncia_url"] = denuncia_url
 
     return avaliacoes
-
-
-def generate_denuncia_url(
-    turma_periodo: str,
-    turma_matricula_professor: int,
-    turma_codigo_disciplina: str,
-    estudante_matricula: int,
-):
-    return url_for(
-        "denuncia.create",
-        turma_periodo=turma_periodo,
-        turma_matricula_professor=turma_matricula_professor,
-        turma_codigo_disciplina=turma_codigo_disciplina,
-        estudante_matricula=estudante_matricula,
-    )
