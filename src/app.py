@@ -1,6 +1,7 @@
 from flask import Flask
 import routes.auth
 import routes.avaliacao
+import routes.denuncia
 
 
 def create_app():
@@ -14,6 +15,7 @@ def create_app():
 
     app.register_blueprint(routes.auth.blueprint)
     app.register_blueprint(routes.avaliacao.blueprint)
+    app.register_blueprint(routes.denuncia.blueprint)
 
     return app
 

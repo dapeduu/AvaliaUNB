@@ -12,6 +12,7 @@
         <h5 class="card-title">Avaliação: {{comentario['estrelas']}}</h5>
         <h6 class="card-subtitle mb-2 text-body-secondary">{{comentario['comentario'] if comentario['comentario'] else
             'Sem comentário'}}</h6>
+        <a href="{{comentario['denuncia_url']}}" class="btn btn-danger">Denunciar</a>
     </div>
 </div>
 {% endfor %}

@@ -70,9 +70,9 @@ def list_comentarios(
         (turma_periodo, turma_matricula_professor, turma_codigo_disciplina),
     )
 
-    comentarios = db.execute_fetchall_query(
+    avaliacoes = db.execute_fetchall_query(
         """
-            SELECT estudante_matricula, comentario, estrelas FROM avaliacao
+            SELECT * FROM avaliacao
             WHERE avaliacao.turma_matricula_professor = %s
                   AND avaliacao.turma_periodo = %s
                   AND turma_codigo_disciplina = %s
@@ -84,8 +84,10 @@ def list_comentarios(
         ),
     )
 
+    avaliacoes = generate_avaliacoes_with_denuncia(avaliacoes)
+
     return render_template(
-        "listar_comentarios.html", comentarios=comentarios, turma=turma
+        "listar_comentarios.html", comentarios=avaliacoes, turma=turma
     )
 
 
@@ -152,3 +154,32 @@ def create(disciplina_codigo: str, professor_matricula: str, periodo: str):
     )
 
     return render_template("criar_avaliacao.html", turma=turma, form_url=form_url)
+
+
+def generate_avaliacoes_with_denuncia(avaliacoes: list):
+    for avaliacao in avaliacoes:
+        denuncia_url = generate_denuncia_url(
+            avaliacao["turma_periodo"],
+            avaliacao["turma_matricula_professor"],
+            avaliacao["turma_codigo_disciplina"],
+            avaliacao["estudante_matricula"],
+        )
+
+        avaliacao["denuncia_url"] = denuncia_url
+
+    return avaliacoes
+
+
+def generate_denuncia_url(
+    turma_periodo: str,
+    turma_matricula_professor: int,
+    turma_codigo_disciplina: str,
+    estudante_matricula: int,
+):
+    return url_for(
+        "denuncia.create",
+        turma_periodo=turma_periodo,
+        turma_matricula_professor=turma_matricula_professor,
+        turma_codigo_disciplina=turma_codigo_disciplina,
+        estudante_matricula=estudante_matricula,
+    )

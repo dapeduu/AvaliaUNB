@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<div class="card m-4" style="max-width: 18rem">
+  <div class="card-body">
+    <h5 class="card-title">Avaliação: {{avaliacao['estrelas']}}</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">{{avaliacao['comentario'] if avaliacao['comentario'] else
+      'Sem comentário'}}</h6>
+  </div>
+</div>
+
+{% endblock %}

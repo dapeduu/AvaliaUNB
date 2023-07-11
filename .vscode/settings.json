@@ -6,6 +6,11 @@
         "editor.tabSize": 4,
         "editor.defaultFormatter": "ms-python.black-formatter",
     },
+    "[html]": {
+        "editor.suggest.insertMode": "replace",
+        "editor.formatOnType": true,
+        "editor.tabSize": 2
+    },
     "editor.formatOnSave": true,
     "python.formatting.provider": "none"
 }
