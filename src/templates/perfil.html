@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+<h1>Perfil</h1>
+
 {% block main %}
 <div class="container-md">
 
@@ -8,13 +10,24 @@
     <div class="col mb-3">
       <label for="matricula" class="col-sm-2 col-form-label">Matrícula</label>
       <div class="col-sm-10">
-        <input type="number" class="form-control" name="matricula" id="matricula" required>
+        <input type="number" class="form-control" name="matricula" id="matricula" readonly
+          value="{{estudante['matricula']}}">
+      </div>
+    </div>
+
+    <div class="col mb-3">
+      <label for="email" class="col-sm-2 col-form-label">Email</label>
+      <div class="col-sm-10">
+        <input type="text " class="form-control" name="email" id="email" value="{{estudante['email']}}"
+          autocomplete="off">
       </div>
     </div>
 
     <div class="col mb-3">
       <label for="avatar" class="col-sm-2 col-form-label">Avatar</label>
       <div class="col-sm-10">
+        <!-- Se nao usar o decode a imagem nao funciona -->
+        <img src="data:image/png;base64,{{estudante['avatar'].decode()}}" alt="Foto de perfil">
         <input type="file" class="form-control" name="avatar" id="avatar" accept="image/png, image/jpeg">
       </div>
     </div>
@@ -22,12 +35,12 @@
     <div class="col mb-3">
       <label for="senha" class="col-sm-2 col-form-label">Senha</label>
       <div class="col-sm-10">
-        <input type="password" class="form-control" name="senha" id="senha" required>
+        <input type="password" class="form-control" name="senha" id="senha" value="{{estudante['senha']}}">
       </div>
     </div>
 
     <button type="submit" class="btn btn-primary">
-      Fazer registro
+      Editar Perfil
     </button>
   </form>
 </div>

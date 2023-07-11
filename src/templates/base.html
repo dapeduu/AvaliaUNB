@@ -37,6 +37,8 @@
         <div class="collapse navbar-collapse d-flex" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-link" href="{{url_for('avaliacao.index')}}">Avaliacoes</a>
+
+            <a class="nav-link" href="{{url_for('auth.perfil')}}">Perfil</a>
             {% with current_user = request.cookies.get("userID")%}
             {% if current_user %}
             <a class="nav-link" href="{{url_for('auth.logout')}}">Logout</a>

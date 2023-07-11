@@ -82,3 +82,22 @@ def register():
         return redirect(url_for("auth.login"))
 
     return render_template("register.html")
+
+
+@blueprint.route("/perfil", methods=["GET", "POST"])
+def perfil():
+    current_estudante = request.cookies.get("userID")
+    if request.method == "POST":
+        return redirect(url_for("auth.perfil"))
+
+    db = Database()
+
+    estudante = db.execute_fetchone_query(
+        """
+        SELECT matricula, email, avatar, senha FROM estudante
+        WHERE estudante.matricula = %s
+    """,
+        (current_estudante,),
+    )
+
+    return render_template("perfil.html", estudante=estudante)
