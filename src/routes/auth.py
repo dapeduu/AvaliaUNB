@@ -88,7 +88,6 @@ def perfil():
     current_estudante = request.cookies.get("userID")
     if request.method == "POST":
         student = dict(request.form)
-        breakpoint()
         avatar = request.files.get("avatar", False)
         if avatar:
             encoded_image = image.encode_image(avatar)

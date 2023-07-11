@@ -26,8 +26,12 @@
     <div class="col mb-3">
       <label for="avatar" class="col-sm-2 col-form-label">Avatar</label>
       <div class="col-sm-10">
+        {% if estudante['avatar'] %}
         <!-- Se nao usar o decode a imagem nao funciona -->
         <img src="data:image/png;base64,{{estudante['avatar'].decode()}}" alt="Foto de perfil">
+        {% else %}
+        <p>Sem foto de perfil definida</p>
+        {% endif %}
         <input type="file" class="form-control" name="avatar" id="avatar" accept="image/png, image/jpeg">
       </div>
     </div>
