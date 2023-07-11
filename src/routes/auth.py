@@ -8,7 +8,7 @@ from flask import (
     make_response,
 )
 from db import Database
-import base64
+import image
 
 blueprint = Blueprint("auth", __name__)
 
@@ -55,9 +55,8 @@ def register():
         student["email"] = f'{student["matricula"]}@aluno.unb.br'
 
         avatar = request.files.get("avatar", False)
-
         if avatar:
-            encoded_image = base64.b64encode(avatar.read())
+            encoded_image = image.encode_image(avatar)
             student["avatar"] = encoded_image
         else:
             flash("Não foi possível carregar sua foto de perfil.", "info")
@@ -88,6 +87,34 @@ def register():
 def perfil():
     current_estudante = request.cookies.get("userID")
     if request.method == "POST":
+        student = dict(request.form)
+        breakpoint()
+        avatar = request.files.get("avatar", False)
+        if avatar:
+            encoded_image = image.encode_image(avatar)
+            student["avatar"] = encoded_image
+
+        db = Database()
+        db.execute_query(
+            """
+            UPDATE estudante
+            SET email=%s, senha=%s
+            WHERE matricula=%s;
+        """,
+            (student["email"], student["senha"], current_estudante),
+        )
+
+        if avatar:
+            db.execute_query(
+                """
+                UPDATE estudante
+                SET avatar=%s
+                WHERE matricula=%s;
+            """,
+                (student["avatar"], current_estudante),
+            )
+
+        flash("Perfil atualizado com sucesso!", "success")
         return redirect(url_for("auth.perfil"))
 
     db = Database()
