@@ -4,6 +4,9 @@
 
 <h1>Denúncias</h1>
 
+{% if not denuncia %}
+<p>Sem denúncias no momento.</p>
+{% endif %}
 {% for denuncia in denuncias %}
 <div class="card m-4">
   <div class="card-body">
