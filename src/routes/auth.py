@@ -22,7 +22,7 @@ def login():
         db = Database()
         user = db.execute_fetchone_query(
             """
-            SELECT matricula, senha FROM estudante
+            SELECT matricula, senha, admin FROM estudante
             WHERE matricula = %s AND senha = %s
         """,
             (matricula, senha),
@@ -32,6 +32,7 @@ def login():
             flash("Login realizado com sucesso!", "success")
             response = make_response(redirect(url_for("avaliacao.index")))
             response.set_cookie("userID", matricula)
+            response.set_cookie("admin", str(user["admin"]))
 
             return response
         else:

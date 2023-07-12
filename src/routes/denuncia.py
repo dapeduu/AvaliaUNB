@@ -90,3 +90,124 @@ def create(
     return render_template(
         "criar_denuncia.html", avaliacao=avaliacao, form_url=form_url
     )
+
+
+@blueprint.route("/list_denuncias")
+def index():
+    db = Database()
+
+    denuncias = db.execute_fetchall_query(
+        """
+                SELECT denuncia.comentario AS comentario_denuncia,
+                avaliacao.comentario AS comentario_avaliacao,
+                denuncia.avaliacao_turma_periodo,
+                denuncia.avaliacao_turma_matricula_professor,
+                denuncia.avaliacao_turma_codigo_disciplina,
+                denuncia.avaliacao_estudante_matricula,
+                denuncia.estudante_matricula,
+                avaliacao.estrelas
+                FROM denuncia
+                JOIN avaliacao ON avaliacao.turma_periodo = denuncia.avaliacao_turma_periodo
+                    AND avaliacao.turma_matricula_professor = denuncia.avaliacao_turma_matricula_professor
+                    AND avaliacao.turma_codigo_disciplina = denuncia.avaliacao_turma_codigo_disciplina
+                    AND avaliacao.estudante_matricula = denuncia.avaliacao_estudante_matricula;
+            """
+    )
+
+    append_url = lambda x: {
+        **x,
+        "decline_url": url_for(
+            "denuncia.decline",
+            avaliacao_turma_periodo=x["avaliacao_turma_periodo"],
+            avaliacao_turma_matricula_professor=x[
+                "avaliacao_turma_matricula_professor"
+            ],
+            avaliacao_turma_codigo_disciplina=x["avaliacao_turma_codigo_disciplina"],
+            avaliacao_estudante_matricula=x["avaliacao_estudante_matricula"],
+            estudante_matricula=x["estudante_matricula"],
+        ),
+        "accept_url": url_for(
+            "denuncia.accept",
+            avaliacao_turma_periodo=x["avaliacao_turma_periodo"],
+            avaliacao_turma_matricula_professor=x[
+                "avaliacao_turma_matricula_professor"
+            ],
+            avaliacao_turma_codigo_disciplina=x["avaliacao_turma_codigo_disciplina"],
+            avaliacao_estudante_matricula=x["avaliacao_estudante_matricula"],
+            estudante_matricula=x["estudante_matricula"],
+        ),
+    }
+
+    denuncias = map(append_url, denuncias)
+
+    return render_template("listar_denuncias.html", denuncias=denuncias)
+
+
+@blueprint.get(
+    "/aceitar_denuncia/<avaliacao_turma_periodo>/<avaliacao_turma_matricula_professor>/<avaliacao_turma_codigo_disciplina>/<avaliacao_estudante_matricula>/<estudante_matricula>"
+)
+def accept(
+    avaliacao_turma_periodo: str,
+    avaliacao_turma_matricula_professor: int,
+    avaliacao_turma_codigo_disciplina: str,
+    avaliacao_estudante_matricula: int,
+    estudante_matricula: int,
+):
+    db = Database()
+
+    db.execute_query(
+        """DELETE FROM denuncia
+           WHERE avaliacao_turma_periodo=%s AND avaliacao_turma_matricula_professor=%s AND avaliacao_turma_codigo_disciplina=%s AND avaliacao_estudante_matricula=%s AND estudante_matricula=%s;
+        """,
+        (
+            avaliacao_turma_periodo,
+            avaliacao_turma_matricula_professor,
+            avaliacao_turma_codigo_disciplina,
+            avaliacao_estudante_matricula,
+            estudante_matricula,
+        ),
+    )
+
+    db.execute_query(
+        """
+        DELETE FROM avaliacao
+        WHERE estudante_matricula=%s AND turma_codigo_disciplina=%s AND turma_matricula_professor=%s AND turma_periodo=%s;
+    """,
+        (
+            avaliacao_estudante_matricula,
+            avaliacao_turma_codigo_disciplina,
+            avaliacao_turma_matricula_professor,
+            avaliacao_turma_periodo,
+        ),
+    )
+
+    flash("Denúncia turma aceita, avaliação removida!", "info")
+    return redirect(url_for("denuncia.index"))
+
+
+@blueprint.get(
+    "/rejeitar_denuncia/<avaliacao_turma_periodo>/<avaliacao_turma_matricula_professor>/<avaliacao_turma_codigo_disciplina>/<avaliacao_estudante_matricula>/<estudante_matricula>"
+)
+def decline(
+    avaliacao_turma_periodo: str,
+    avaliacao_turma_matricula_professor: int,
+    avaliacao_turma_codigo_disciplina: str,
+    avaliacao_estudante_matricula: int,
+    estudante_matricula: int,
+):
+    db = Database()
+    db.execute_query(
+        """DELETE FROM denuncia
+           WHERE avaliacao_turma_periodo=%s AND avaliacao_turma_matricula_professor=%s AND avaliacao_turma_codigo_disciplina=%s AND avaliacao_estudante_matricula=%s AND estudante_matricula=%s;
+        """,
+        (
+            avaliacao_turma_periodo,
+            avaliacao_turma_matricula_professor,
+            avaliacao_turma_codigo_disciplina,
+            avaliacao_estudante_matricula,
+            estudante_matricula,
+        ),
+    )
+
+    flash("Denúncia rejeitada!", "info")
+    return redirect(url_for("denuncia.index"))

@@ -37,7 +37,9 @@
         <div class="collapse navbar-collapse d-flex" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-link" href="{{url_for('avaliacao.index')}}">Avaliacoes</a>
-
+            {% if request.cookies.get('admin') %}
+            <a class="nav-link" href="{{url_for('denuncia.index')}}">Denúncias</a>
+            {%endif%}
             <a class="nav-link" href="{{url_for('auth.perfil')}}">Perfil</a>
             {% with current_user = request.cookies.get("userID")%}
             {% if current_user %}
@@ -47,6 +49,7 @@
             {% endif %}
             {%endwith%}
             <a class="nav-link" href="{{url_for('auth.register')}}">Registrar-se</a>
+
           </div>
         </div>
       </div>

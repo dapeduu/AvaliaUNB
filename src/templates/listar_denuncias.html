@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<h1>Denúncias</h1>
+
+{% for denuncia in denuncias %}
+<div class="card m-4">
+  <div class="card-body">
+    <h5 class="card-title">{{denuncia['comentario_denuncia']}}</h5>
+
+    <div class="card my-4">
+      <div class="card-body">
+        <h5 class="card-title">Avaliação: {{denuncia['estrelas']}}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">{{denuncia['comentario'] if denuncia['comentario'] else
+          'Sem comentário'}}</h6>
+      </div>
+    </div>
+
+    <a href="{{denuncia['accept_url']}}" class="btn btn-primary">Retirar avaliação</a>
+    <a href="{{denuncia['decline_url']}}" class="btn btn-danger">Manter avaliação</a>
+  </div>
+</div>
+{%endfor%}
+
+{% endblock %}
