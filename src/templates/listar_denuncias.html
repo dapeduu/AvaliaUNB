@@ -7,25 +7,26 @@
 {% if not denuncias %}
 <p>Sem denúncias no momento.</p>
 {% endif %}
+<div class="justify-content-center d-flex flex-wrap">
+  {% for denuncia in denuncias %}
+  <div class="card m-4">
+    <div class="card-body">
+      <h5 class="card-title">{{denuncia['comentario_denuncia']}}</h5>
 
-{% for denuncia in denuncias %}
-<div class="card m-4">
-  <div class="card-body">
-    <h5 class="card-title">{{denuncia['comentario_denuncia']}}</h5>
-
-    <div class="card my-4">
-      <div class="card-body">
-        <h5 class="card-title">Avaliação: {{denuncia['estrelas']}}</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">{{denuncia['comentario_avaliacao'] if
-          denuncia['comentario_avaliacao'] else
-          'Sem comentário'}}</h6>
+      <div class="card my-4">
+        <div class="card-body">
+          <h5 class="card-title">Avaliação: {{denuncia['estrelas']}}</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">{{denuncia['comentario_avaliacao'] if
+            denuncia['comentario_avaliacao'] else
+            'Sem comentário'}}</h6>
+        </div>
       </div>
-    </div>
 
-    <a href="{{denuncia['accept_url']}}" class="btn btn-primary">Retirar avaliação</a>
-    <a href="{{denuncia['decline_url']}}" class="btn btn-danger">Manter avaliação</a>
+      <a href="{{denuncia['accept_url']}}" class="btn btn-primary">Retirar avaliação</a>
+      <a href="{{denuncia['decline_url']}}" class="btn btn-danger">Manter avaliação</a>
+    </div>
   </div>
+  {%endfor%}
 </div>
-{%endfor%}
 
 {% endblock %}

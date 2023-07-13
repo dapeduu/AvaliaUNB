@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
-<div class="container-md">
+<div class="d-flex justify-content-center">
   <form method="post" action="{{url_for('auth.login')}}">
     <div class="col mb-3">
       <label for="matricula" class="col-sm-2 col-form-label">Matrícula</label>
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">
+    <button type="submit" class="btn btn-primary ">
       Fazer login
     </button>
   </form>
