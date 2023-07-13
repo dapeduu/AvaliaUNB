@@ -2,11 +2,12 @@
 
 {% block main %}
 
-<h1>Denúncias</h1>
+<h1 class="text-center">Denúncias</h1>
 
-{% if not denuncia %}
+{% if not denuncias %}
 <p>Sem denúncias no momento.</p>
 {% endif %}
+
 {% for denuncia in denuncias %}
 <div class="card m-4">
   <div class="card-body">

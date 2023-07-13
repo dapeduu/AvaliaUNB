@@ -76,8 +76,10 @@ AS SELECT t.periodo AS turma_periodo,
     p.nome AS professor_nome,
     avg(a.estrelas) AS avaliacao_media,
     t.matricula_professor,
-    t.codigo_disciplina
+    t.codigo_disciplina,
+	d.nome AS nome_disciplina
    FROM turma t
      JOIN professor p ON t.matricula_professor::text = p.matricula::text
      LEFT JOIN avaliacao a ON t.periodo::text = a.turma_periodo::text AND t.matricula_professor::text = a.turma_matricula_professor::text AND t.codigo_disciplina::text = a.turma_codigo_disciplina::text
-  GROUP BY t.periodo, p.nome, t.matricula_professor, t.codigo_disciplina;
+	 JOIN disciplina d ON d.codigo = t.codigo_disciplina
+  GROUP BY t.periodo, p.nome, t.matricula_professor, t.codigo_disciplina, d.nome;
