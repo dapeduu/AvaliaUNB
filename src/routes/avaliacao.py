@@ -17,7 +17,7 @@ from urls import generate_denuncia_url
 blueprint = Blueprint("avaliacao", __name__)
 
 
-@blueprint.route("/")
+@blueprint.route("/avaliacoes")
 def index():
     make_avaliar_url = lambda x: {
         **x,
