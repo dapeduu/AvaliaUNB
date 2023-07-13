@@ -2,24 +2,25 @@ import psycopg
 from psycopg.rows import dict_row
 from datetime import datetime
 
+
 class Database:
     def __init__(self) -> None:
         "Inicializa conexão com o banco"
         self.db = psycopg.connect(
-                host='localhost',
-                port='5432',
-                dbname='avalia_unb',
-                user='postgres',
-                password='postgres',
-                row_factory=dict_row
-            )
+            host="localhost",
+            port="5432",
+            dbname="avalia_unb",
+            user="postgres",
+            password="postgres",
+            row_factory=dict_row,
+        )
 
-        print('Conexão iniciada! ', self.__current_time_formated())
+        print("Conexão iniciada! ", self.__current_time_formated())
 
     def __del__(self) -> None:
         "Encerra conexão quando a classe sair do escopo"
         self.db.close()
-        print('Conexão encerrada! ', self.__current_time_formated())
+        print("Conexão encerrada! ", self.__current_time_formated())
 
     def execute_query(self, query: str, params=None):
         "Executa query que não retorna um registro"

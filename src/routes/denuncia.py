@@ -106,6 +106,7 @@ def index():
                 denuncia.avaliacao_estudante_matricula,
                 denuncia.estudante_matricula,
                 avaliacao.estrelas
+
                 FROM denuncia
                 JOIN avaliacao ON avaliacao.turma_periodo = denuncia.avaliacao_turma_periodo
                     AND avaliacao.turma_matricula_professor = denuncia.avaliacao_turma_matricula_professor
@@ -181,7 +182,7 @@ def accept(
         ),
     )
 
-    flash("Denúncia turma aceita, avaliação removida!", "info")
+    flash("Denúncia aceita, avaliação removida!", "info")
     return redirect(url_for("denuncia.index"))
 
 

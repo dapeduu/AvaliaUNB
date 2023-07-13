@@ -32,7 +32,8 @@ def login():
             flash("Login realizado com sucesso!", "success")
             response = make_response(redirect(url_for("avaliacao.index")))
             response.set_cookie("userID", matricula)
-            response.set_cookie("admin", str(user["admin"]))
+            if user["admin"]:
+                response.set_cookie("admin", str(user["admin"]))
 
             return response
         else:
@@ -45,6 +46,7 @@ def login():
 def logout():
     response = make_response(redirect(url_for("auth.login")))
     response.delete_cookie("userID")
+    response.delete_cookie("admin")
     return response
 
 

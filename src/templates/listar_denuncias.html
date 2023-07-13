@@ -15,7 +15,8 @@
     <div class="card my-4">
       <div class="card-body">
         <h5 class="card-title">Avaliação: {{denuncia['estrelas']}}</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">{{denuncia['comentario'] if denuncia['comentario'] else
+        <h6 class="card-subtitle mb-2 text-body-secondary">{{denuncia['comentario_avaliacao'] if
+          denuncia['comentario_avaliacao'] else
           'Sem comentário'}}</h6>
       </div>
     </div>
