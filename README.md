@@ -46,15 +46,16 @@ O Modelo Relacional é um modelo de dados utilizado em bancos de dados relaciona
 ## Fotos
 
 <div style="display: flex; flex-wrap: wrap;">
-  <img src="docs/images/home.png" alt="Home" style=" max-width: 200px; padding: 5px;" />
-  <img src="docs/images/login.png" alt="Login" style="max-width: 200px; padding: 5px;" />
-  <img src="docs/images/registro.png" alt="Registro" style="max-width: 200px; padding: 5px;" />
-  <img src="docs/images/perfil.png" alt="Perfil" style="max-width: 200px; padding: 5px;" />
-  <img src="docs/images/general.png" alt="General" style="max-width: 200px; padding: 5px;" />
-  <img src="docs/images/comentarios.png" alt="Comentarios" style="max-width: 200px; padding: 5px;" />
-  <img src="docs/images/denunciar.png" alt="Denunciar" style="max-width: 200px; padding: 5px;" />
-  <img src="docs/images/comentarios.png" alt="Comentarios" style="max-width: 200px; padding: 5px;" />
-  <img src="docs/images/denuncias.png" alt="Denuncias" style="max-width: 200px; padding: 5px;" />
+  <img src="docs/images/home.png" alt="Home" style="height: auto; padding: 5px;" width="250px"  />
+  <img src="docs/images/login.png" alt="Login" style="height: auto; padding: 5px;" width="250px"  />
+  <img src="docs/images/registro.png" alt="Registro" style="height: auto; padding: 5px;" width="250px"  />
+  <img src="docs/images/perfil.png" alt="Perfil" style="height: auto; padding: 5px;" width="250px"  />
+  <img src="docs/images/general.png" alt="General" style="height: auto; padding: 5px;" width="250px"  />
+  <img src="docs/images/comentarios.png" alt="Comentarios" style="height: auto; padding: 5px;" width="250px"  />
+  <img src="docs/images/denunciar.png" alt="Denunciar" style="height: auto; padding: 5px;" width="250px"  />
+  <img src="docs/images/comentarios.png" alt="Comentarios" style="height: auto; padding: 5px;" width="250px"  />
+  <img src="docs/images/denuncias.png" alt="Denuncias" style="height: auto; padding: 5px;" width="250px"  />
 </div>
+
 
 
